@@ -1,8 +1,8 @@
+// gcc -o main.exe main_001.c -lpthead
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
-
-//	gcc -o main.exe main.c -lpthead
 
 #define uchar unsigned char
 
@@ -11,8 +11,8 @@
 uchar memory[ 4096 ];
 
 void *thFunz0(void *thParam) {
-	char *mem;
-	mem = (char *)thParam;
+	uchar *mem;
+	mem = (uchar *)thParam;
    
 	while (1) {
 		mem[0]++;
@@ -23,8 +23,8 @@ void *thFunz0(void *thParam) {
 }
 
 void *thFunz1(void *thParam) {
-	char *mem;
-	mem = (char *)thParam;
+	uchar *mem;
+	mem = (uchar *)thParam;
    
 	while (1) {
 		mem[1]++;
@@ -35,8 +35,8 @@ void *thFunz1(void *thParam) {
 }
 
 void *thFunz2(void *thParam) {
-	char *mem;
-	mem = (char *)thParam;
+	uchar *mem;
+	mem = (uchar *)thParam;
    
 	while (1) {
 		if ( mem[0] > mem[1] ) {
@@ -50,8 +50,8 @@ void *thFunz2(void *thParam) {
 }
 
 void *thFunz3(void *thParam) {
-	char *mem;
-	mem = (char *)thParam;
+	uchar *mem;
+	mem = (uchar *)thParam;
    
 	while (1) {
 		if ( mem[0] > mem[1] ) {
@@ -65,21 +65,17 @@ void *thFunz3(void *thParam) {
 }
 
 void *thFunz4(void *thParam) {
-	char *mem;
-	mem = (char *)thParam;
+	uchar *mem;
+	mem = (uchar *)thParam;
    
 	while (1) {
-		if ( mem[2] != mem[3] ) {
-			mem[4] = 255;
-		} else {
-			mem[4] = 0;
-		}
+		if ( mem[2] != mem[3] ) mem[4]++;
 	}
 	
 	pthread_exit(NULL);
 }
 
-int main( int argc, char *argv[] ) {
+int main( int argc, uchar *argv[] ) {
 	int rc;
 
 	pthread_t th_0;
@@ -93,7 +89,7 @@ int main( int argc, char *argv[] ) {
 	rc = pthread_create(&th_2, NULL, thFunz2, (void *)memory);
 	rc = pthread_create(&th_3, NULL, thFunz3, (void *)memory);
 	rc = pthread_create(&th_4, NULL, thFunz4, (void *)memory);
-		
+	
 	while (1) {
 		printf( "memory: %08X ", memory );
 		for ( rc=0; rc<8; rc ++ ) {
